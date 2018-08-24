@@ -19,13 +19,11 @@
 	var searchArray = [[]];
 	var searchWordPositions = [];
 	var showAnswer = false;
-	var searchWordsTableWithAnswer;
-	var searchWordsTableWithoutAnswer;
 
 	function onCreate()
 	{
 		searchArray = createSearchArray();
-		searchWordsTableWithoutAnswer = printSearchArray();
+		printSearchArray();
 	}
 
 	function createSearchArray()
@@ -106,7 +104,6 @@
 		result += "</tr>";
 		result += "</table>";
 		document.getElementById("wordSearchTable").innerHTML = result;
-		return result;
 	}
 	
 	function onWorkSheetClick() 
@@ -116,7 +113,7 @@
 	    document.getElementById("previewLink2").style.background = "#4286f4";
 		document.getElementById("previewLink2").style.color = "#fff";		
 		showAnswer = false;
-		searchWordsTableWithOutAnswer = printSearchArray();
+		printSearchArray();
 	}
 	
 	function onAnswerKeyClick() 
@@ -126,7 +123,7 @@
 		document.getElementById("previewLink2").style.background = "#fff";
 		document.getElementById("previewLink2").style.color = "#000";
 		showAnswer = true;
-		searchWordsTableWithAnswer = printSearchArray();
+		printSearchArray();
 	}
     </script>
 </head>
