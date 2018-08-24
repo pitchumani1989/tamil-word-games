@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>Word Search</title>
+	<style>
+		.colorBorder {
+    		border: 1px solid blue;
+		}
+	</style>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+  <link rel="stylesheet" href="css/unicode.css" />
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  <script src="http://chancejs.com/chance.min.js"></script>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript" src="js/unicode.js"></script>
+  <script type="text/javascript">
+    var tamilHelpingChars = ['ஂ', 'ா', 'ி', 'ீ', 'ு', 'ூ', 'ெ', 'ே', 'ை', 'ொ', 'ோ', 'ௌ', '்', 'ௗ'];
+	var tamilChars = ["அ", "ஆ", "இ", "ஈ", "உ", "ஊ", "எ", "ஏ", "ஐ", "ஒ", "ஓ", "ஔ", "க", "ங", "ச", "ஞ", "ட", "ண", "த", "ந", "ன", "ப", "ம", "ய", "ர", "ற", "ல", "ள", "ழ", "வ", "ஷ", "ஸ", "ஹ", "ஜ"];
+	var searchArray = [[]];
+	var searchWordPositions = [];
+	var showAnswer = false;
+	var searchWordsTableWithAnswer;
+	var searchWordsTableWithoutAnswer;
+
+	function onCreate()
+	{
+		searchArray = createSearchArray();
+		searchWordsTableWithoutAnswer = printSearchArray();
+	}
+
+	function createSearchArray()
+	{
+		showAnswer = false;
+		searchWordPositions = [];
+
+		// create array with random values
+		var searchArray = [[]];
+		var rows = document.getElementById("lettersDownAcross").value;
+		var cols = document.getElementById("lettersDownCount").value;
+    	for (var i = 0; i < rows; i++) 
+		{
+			var rowArray = [];
+		    for (var j = 0; j < cols; j++)
+			{
+				var randaomChar = tamilChars[Math.floor(Math.random() * tamilChars.length)];
+				rowArray.push(randaomChar);
+			}
+			searchArray.push(rowArray);
+    	}
+
+		// update array with search words horizontally
+		var searchWords = document.getElementById("searchContent").value.split('\n');
+		var uniqueRowIndexes = chance.unique(chance.natural, searchWords.length, {min: 1, max: rows});
+    	for (var i = 0; i < searchWords.length; i++) 
+		{
+			var searchWord = combineUnicodeChars(searchWords[i].trim());
+			var wordCount = searchWord.length;
+			var colIndex = Math.floor(Math.random() * (cols - wordCount)) + 1;
+			for(var j = 0; j < wordCount; j++)
+			{
+				searchArray[uniqueRowIndexes[i]][colIndex] = searchWord[j];
+				searchWordPositions.push(uniqueRowIndexes[i]+"-"+colIndex);
+				colIndex++;
+			}
+    	}
+		return searchArray;
+	}
+
+	function combineUnicodeChars(searchWord)
+	{
+		var splitWords = [];
+		for(var i = 0; i < searchWord.length; i++){
+			if(tamilHelpingChars.includes(searchWord.charAt(i))){
+				splitWords[i-1] = searchWord.charAt(i-1) + searchWord.charAt(i);
+			}
+			else {
+				splitWords[i] = searchWord.charAt(i);
+			}
+		}
+		splitWords = splitWords.filter(function(e){return e}); 
+		return splitWords;
+	}
+	
+	function printSearchArray()
+	{
+		//print array values in table format
+		var result = "<table>";
+		for (var i = 0; i < searchArray.length; i++) 
+		{
+			result += "<tr>";
+    		for (var j = 0; j < searchArray[i].length; j++) 
+			{
+				if(showAnswer && searchWordPositions.includes(i+"-"+j))
+				{
+					result += "<td class=\"colorBorder\">" + searchArray[i][j] + "</td>";
+				}
+				else
+				{
+					result += "<td>" + searchArray[i][j] + "</td>";
+				}
+    		}
+    		result += "</tr>";
+		}
+		result += "</tr>";
+		result += "</table>";
+		document.getElementById("wordSearchTable").innerHTML = result;
+		return result;
+	}
+	
+	function onWorkSheetClick() 
+	{
+		document.getElementById("previewLink1").style.background = "#fff";
+		document.getElementById("previewLink1").style.color = "#000";
+	    document.getElementById("previewLink2").style.background = "#4286f4";
+		document.getElementById("previewLink2").style.color = "#fff";		
+		showAnswer = false;
+		searchWordsTableWithOutAnswer = printSearchArray();
+	}
+	
+	function onAnswerKeyClick() 
+	{
+		document.getElementById("previewLink1").style.background = "#4286f4";
+		document.getElementById("previewLink1").style.color = "#fff";
+		document.getElementById("previewLink2").style.background = "#fff";
+		document.getElementById("previewLink2").style.color = "#000";
+		showAnswer = true;
+		searchWordsTableWithAnswer = printSearchArray();
+	}
+</script>
+ </head>
+ <body>
+ <div class="heading"><h1>Word Search</h1></div>
+<table>
+<tr>
+<td>
+  <div id="wordSearchContainer">
+   <div class="outerWrapper">    
+   <form>
+    <div> 
+		<label>Title</label><br>
+		<input type="text" id="title" placeholder="Word Search"/> 
+	</div>
+	<div>
+		<label>Words</label><br> 
+		<textarea class="unicode" id="searchContent" lang="ta" rows="20" cols="20" placeholder="List down your words here..."></textarea>
+	</div>
+	<div>
+		<label>Letters Down</label>
+		<select id="lettersDownCount">
+     		<option value="5">5</option>
+     		<option value="10" selected="selected">10</option>
+     		<option value="15">15</option>
+     		<option value="20">20</option>
+     		<option value="25">25</option>
+     		<option value="30">30</option>
+		</select>
+		<label>Letters Across</label>
+		<select id="lettersDownAcross">
+     		<option value="5">5</option>
+     		<option value="10" selected="selected">10</option>
+     		<option value="15">15</option>
+     		<option value="20">20</option>
+     		<option value="25">25</option>
+     		<option value="30">30</option>
+		</select>
+		<img src="img/create.png" width="40px" height="40px" onclick="onCreate();">Create</img>
+	</div>
+   </form>
+   </div>
+  </div>
+  </td>
+  <td>
+  <div class="previewContainer">
+		<div class="previewHeading">Preview Worksheet</div><br>
+		<div class="answerContainer">
+			<div class="previewTabs">
+				<span id="previewLink1" class="previewLink1" onclick="onWorkSheetClick();">WORKSHEET</span>
+				<span id="previewLink2" class="previewLink2" onclick="onAnswerKeyClick();">ANSWER KEY</span>
+			</div>
+			<center><label>Word Search</label></center><br>
+		<div id="wordSearchTable" class="wordSearchTable" align="center"></div>
+		</div>
+  	</div>
+  </td>
+ </body>
+</html>

@@ -1,0 +1,103 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  background: #fff url(../img/bg.png) repeat;
+  font-family: sans-serif;
+  color: #eee;
+}
+
+h2{
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+label{
+  color: #000;
+  margin-left: 10px;
+  text-shadow: 0 1px 0 #000;
+}
+#wordSearchContainer{
+  width: 600px;
+  margin-left: 400px;
+}
+.outerWrapper{
+  margin-top: 30px;
+  padding: 5px;
+  background: #fff;
+}
+.innerWrapper{  
+  padding: 10px;
+}
+input[type=text], input[type=submit], textarea{
+  padding: 10px;
+  width: 450px;
+  margin: 10px 10px;
+  margin-bottom: 20px;
+}
+select{
+  padding: 10px;
+  width: 75px;
+  margin: 10px 10px;
+}
+input[type=button]{
+  width: 75px;
+  height:25px;
+  border-radius: 5px;
+  box-shadow: 1px 0px 2px 0 #222;
+  background: url(../img/button.jpg) repeat-x;
+}
+img{
+  margin-left: 25px;
+  cursor: pointer;
+}
+.heading{
+  position: relative;
+  text-align: center;
+  color: #000;
+}
+.previewContainer{
+  width: 400px;
+  height: 650px;
+  background: #4286f4;
+}
+.answerContainer{
+	width: 340px;
+    height: 550px;
+	background: #fff;	
+	margin-left: 25px; 
+}
+.previewTabs{
+	width: 350px;
+	height: 50px;
+}
+.previewHeading{
+  padding: 20px;
+  margin-top: 25px;
+  position: relative;
+  text-align: center;
+  color: #fff;
+}
+.previewLink1{
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-bottom: 10px;
+  text-align: center;
+  color: #000;
+  cursor: pointer;
+}
+.previewLink2{
+  margin-left: 20px;
+  padding-left: 32px;
+  padding-right: 25px;
+  padding-bottom: 10px;
+  text-align: center;
+  background: #4286f4;
+  color: #fff;
+  cursor: pointer;
+}
+.wordSearchTable{
+  color: #000;
+}
