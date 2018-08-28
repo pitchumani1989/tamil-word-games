@@ -7,6 +7,7 @@
     		border: 1px solid blue;
 		}
 
+
     </style>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
     <link rel="stylesheet" href="css/unicode.css"/>
@@ -28,6 +29,7 @@
         {
 		    searchArray = createSearchArray(searchWords.split('\n'));
 		    printSearchArray();
+            document.getElementById("create").style.cursor = "not-allowed";
 		}
 	}
 
@@ -134,13 +136,14 @@
     {
         if(document.getElementById("searchContent").value != "")
         {
-            document.getElementById("create").style.cursor = "pointer"
+            document.getElementById("create").style.cursor = "pointer";
         }
         else
         {
-            document.getElementById("create").style.cursor = "not-allowed"
+            document.getElementById("create").style.cursor = "not-allowed";
         }
     }
+
     </script>
 </head>
 <body>
