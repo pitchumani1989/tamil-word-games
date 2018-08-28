@@ -6,6 +6,7 @@
 		.colorBorder {
     		border: 1px solid blue;
 		}
+
     </style>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
     <link rel="stylesheet" href="css/unicode.css"/>
@@ -22,11 +23,15 @@
 
 	function onCreate()
 	{
-		searchArray = createSearchArray();
-		printSearchArray();
+        var searchWords = document.getElementById("searchContent").value;
+        if(searchWords != "")
+        {
+		    searchArray = createSearchArray(searchWords.split('\n'));
+		    printSearchArray();
+		}
 	}
 
-	function createSearchArray()
+	function createSearchArray(searchWords)
 	{
 		showAnswer = false;
 		searchWordPositions = [];
@@ -47,7 +52,6 @@
     	}
 
 		// update array with search words horizontally
-		var searchWords = document.getElementById("searchContent").value.split('\n');
 		var uniqueRowIndexes = chance.unique(chance.natural, searchWords.length, {min: 1, max: rows});
     	for (var i = 0; i < searchWords.length; i++) 
 		{
@@ -125,6 +129,18 @@
 		showAnswer = true;
 		printSearchArray();
 	}
+
+    function changeCursor()
+    {
+        if(document.getElementById("searchContent").value != "")
+        {
+            document.getElementById("create").style.cursor = "pointer"
+        }
+        else
+        {
+            document.getElementById("create").style.cursor = "not-allowed"
+        }
+    }
     </script>
 </head>
 <body>
@@ -142,7 +158,7 @@
                         <div>
                             <label>Words</label><br>
                             <textarea class="unicode" id="searchContent" lang="ta" rows="20" cols="20"
-                                      placeholder="List down your words here..."></textarea>
+                                      placeholder="List down your words here..." oninput="changeCursor()"></textarea>
                         </div>
                         <div>
                             <label>Letters Down</label>
@@ -163,7 +179,7 @@
                                 <option value="25">25</option>
                                 <option value="30">30</option>
                             </select>
-                            <img src="img/create.png" width="40px" height="40px" onclick="onCreate();"/>
+                            <img id="create" src="img/create.png" width="40px" height="40px" onclick="onCreate();"/>
                         </div>
                     </form>
                 </div>

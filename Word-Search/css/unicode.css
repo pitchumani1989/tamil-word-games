@@ -51,7 +51,7 @@ input[type=button]{
 }
 img{
   margin-left: 25px;
-  cursor: pointer;
+  cursor: not-allowed;
 }
 .heading{
   position: relative;
