@@ -29,7 +29,6 @@
         {
 		    searchArray = createSearchArray(searchWords.split('\n'));
 		    printSearchArray();
-            document.getElementById("create").style.cursor = "not-allowed";
 		}
 	}
 
@@ -90,7 +89,7 @@
 	function printSearchArray()
 	{
 		//print array values in table format
-		var result = "<table>";
+		var result = "<font size=\"3\"><table>";
 		for (var i = 0; i < searchArray.length; i++) 
 		{
 			result += "<tr>";
@@ -108,7 +107,7 @@
     		result += "</tr>";
 		}
 		result += "</tr>";
-		result += "</table>";
+		result += "</table></font>";
 		document.getElementById("wordSearchTable").innerHTML = result;
 	}
 	
