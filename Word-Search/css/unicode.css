@@ -61,7 +61,7 @@ img{
 .previewContainer{
   width: 400px;
   height: 650px;
-  background: #ffffff;
+  background: #4286f4;
 }
 .answerContainer{
 	width: 340px;
@@ -94,7 +94,7 @@ img{
   padding-right: 25px;
   padding-bottom: 10px;
   text-align: center;
-  background: #ffffff;
+  background: #4286f4;
   color: #fff;
   cursor: pointer;
 }
