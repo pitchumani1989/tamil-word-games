@@ -9,6 +9,8 @@
 
 
 
+
+
     </style>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
     <link rel="stylesheet" href="css/unicode.css"/>
@@ -89,8 +91,17 @@
 	
 	function printSearchArray(searchWords)
 	{
+	    var result = "";
+        if(document.getElementById("title").value != "")
+        {
+            result += "<center>"+document.getElementById("title").value+"</center><br>";
+        }
+        else
+        {
+            result += "<center>Word Search</center><br>";
+        }
 		//print array values in table format
-		var result = "<font size=\"3\"><table>";
+		result += "<font size=\"3\"><table>";
 		for (var i = 0; i < searchArray.length; i++) 
 		{
 			result += "<tr>";
@@ -157,6 +168,8 @@
     }
 
 
+
+
     </script>
 </head>
 <body>
@@ -210,8 +223,6 @@
                         <span id="previewLink1" class="previewLink1" onclick="onWorkSheetClick();">WORKSHEET</span>
                         <span id="previewLink2" class="previewLink2" onclick="onAnswerKeyClick();">ANSWER KEY</span>
                     </div>
-                    <center><label>Word Search</label></center>
-                    <br>
                     <div id="wordSearchTable" class="wordSearchTable" align="center"></div>
                 </div>
             </div>
