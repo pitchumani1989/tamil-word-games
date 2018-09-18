@@ -8,6 +8,7 @@
 		}
 
 
+
     </style>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
     <link rel="stylesheet" href="css/unicode.css"/>
@@ -28,7 +29,7 @@
         if(searchWords != "")
         {
 		    searchArray = createSearchArray(searchWords.split('\n'));
-		    printSearchArray();
+		    printSearchArray(searchWords.split('\n'));
 		}
 	}
 
@@ -86,7 +87,7 @@
 		return splitWords;
 	}
 	
-	function printSearchArray()
+	function printSearchArray(searchWords)
 	{
 		//print array values in table format
 		var result = "<font size=\"3\"><table>";
@@ -108,6 +109,18 @@
 		}
 		result += "</tr>";
 		result += "</table></font>";
+		result += "<br><hr><br>";
+		var wordCount = 0;
+		for (var i = 0; i < searchWords.length; i++)
+		{
+			result+= searchWords[i].trim()+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+			wordCount++;
+			if(wordCount == 3)
+		    {
+		        wordCount = 0;
+		        result+= "<br>";
+		    }
+    	}
 		document.getElementById("wordSearchTable").innerHTML = result;
 	}
 	
@@ -142,6 +155,7 @@
             document.getElementById("create").style.cursor = "not-allowed";
         }
     }
+
 
     </script>
 </head>
