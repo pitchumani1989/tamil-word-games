@@ -6,11 +6,6 @@
 		.colorBorder {
     		border: 1px solid blue;
 		}
-
-
-
-
-
     </style>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
     <link rel="stylesheet" href="css/unicode.css"/>
@@ -121,18 +116,21 @@
 		result += "</tr>";
 		result += "</table></font>";
 		result += "<br><hr><br>";
+		document.getElementById("wordSearchTable").innerHTML = result;
+
 		var wordCount = 0;
+		var questions = "";
 		for (var i = 0; i < searchWords.length; i++)
 		{
-			result+= searchWords[i].trim()+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+			questions+= searchWords[i]+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 			wordCount++;
 			if(wordCount == 3)
 		    {
 		        wordCount = 0;
-		        result+= "<br>";
+		        questions+= "<br>";
 		    }
     	}
-		document.getElementById("wordSearchTable").innerHTML = result;
+		document.getElementById("wordSearchQuestions").innerHTML = questions;
 	}
 	
 	function onWorkSheetClick() 
@@ -166,10 +164,6 @@
             document.getElementById("create").style.cursor = "not-allowed";
         }
     }
-
-
-
-
     </script>
 </head>
 <body>
@@ -224,6 +218,7 @@
                         <span id="previewLink2" class="previewLink2" onclick="onAnswerKeyClick();">ANSWER KEY</span>
                     </div>
                     <div id="wordSearchTable" class="wordSearchTable" align="center"></div>
+                    <div id="wordSearchQuestions" class="wordSearchQuestions" align="center"></div>
                 </div>
             </div>
         </td>

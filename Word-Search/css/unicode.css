@@ -98,6 +98,6 @@ img{
   color: #fff;
   cursor: pointer;
 }
-.wordSearchTable{
+.wordSearchTable, .wordSearchQuestions{
   color: #000;
 }
