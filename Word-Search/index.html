@@ -12,7 +12,27 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script src="http://chancejs.com/chance.min.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script type="text/javascript" src="js/unicode.js"></script>
+    <script type="text/javascript">
+      // Load the Google Transliterate API
+      google.load("elements", "1", { packages: "transliteration" });
+      function onLoad() {
+        var options = {
+            sourceLanguage:
+                google.elements.transliteration.LanguageCode.ENGLISH,
+            destinationLanguage:
+                [google.elements.transliteration.LanguageCode.TAMIL],
+            shortcutKey: 'ctrl+g',
+            transliterationEnabled: true
+        };
+
+        // Create an instance on TransliterationControl with the required options.
+        var control = new google.elements.transliteration.TransliterationControl(options);
+
+        // Enable transliteration in the textbox with id 'searchContent'.
+        control.makeTransliteratable(['searchContent']);
+      }
+      google.setOnLoadCallback(onLoad);
+    </script>
     <script type="text/javascript">
     var tamilHelpingChars = ['ஂ', 'ா', 'ி', 'ீ', 'ு', 'ூ', 'ெ', 'ே', 'ை', 'ொ', 'ோ', 'ௌ', '்', 'ௗ'];
 	var tamilChars = ["அ", "ஆ", "இ", "ஈ", "உ", "ஊ", "எ", "ஏ", "ஐ", "ஒ", "ஓ", "ஔ", "க", "ங", "ச", "ஞ", "ட", "ண", "த", "ந", "ன", "ப", "ம", "ய", "ர", "ற", "ல", "ள", "ழ", "வ", "ஷ", "ஸ", "ஹ", "ஜ"];
