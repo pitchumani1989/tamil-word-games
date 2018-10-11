@@ -125,11 +125,11 @@
 			{
 				if(showAnswer && searchWordPositions.includes(i+"-"+j))
 				{
-					result += "<td class=\"colorBorder\">" + searchArray[i][j] + "</td>";
+					result += "<td class=\"colorBorder\" align = \"center\">" + searchArray[i][j] + "</td>";
 				}
 				else
 				{
-					result += "<td>" + searchArray[i][j] + "</td>";
+					result += "<td align = \"center\">" + searchArray[i][j] + "</td>";
 				}
     		}
     		result += "</tr>";
@@ -223,7 +223,7 @@
                                 <option value="25">25</option>
                                 <option value="30">30</option>
                             </select>
-                            <img id="create" src="img/create.png" width="40px" height="40px" onclick="onCreate();"/>
+                            <input type="button" value="Create" onclick="onCreate();">
                         </div>
                     </form>
                 </div>
