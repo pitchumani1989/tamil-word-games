@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tamil cross word puzzle</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/loading.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/jquery-ui.css">
+   
+ 
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        #mainContainer { display:none; }
+        .canvasContainer { margin-bottom:15px; }
+
+        .sliderText { font-weight: bold;}
+        .sliderText span { font-weight: normal;}
+        .sliderValues { font-weight: bold;}
+        .sliderContainer { margin-bottom:20px;}
+
+        label {font-weight: normal;}
+    </style>
+  </head>
+  <body>
+
+   <div></div>
+    <div id="topContainer" class="container">
+    <section>
+    <div class="row">
+    <div class="panel panel-default">
+    <div class="panel-body">
+        <div class="col-sm-6">
+        	    <div class="form-group"> 
+        	    	<h3>Title</h3>
+	                  <div>
+		              <input type="text" id="txtCrosswordTitle" class="form-control" value="Crossword Puzzle"/>
+		          </div>
+		      </div>
+	
+    
+		     <div class="form-group">
+                    <h3>Words</h3>
+                    <textarea style="width:100%" id="txtWords" rows="25" charset="utf-8"  class="form-control"  
+                  onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;">
+கல்லணை, கரிகாலன் கட்டிய அணை
+சர்க்கரை, கரும்பிலிருந்து தயாரிக்கப்படும் இனிப்பு
+தேன், தேனீக்கள் சேகரிப்பது
+                    </textarea>
+                    </div>
+                
+                <div>
+                 <input 
+                            type="button" 
+                            class= "pull-right btn btn-primary"
+                            id="btnAddWords" 
+                            onclick="btnAddWords_click()"
+                            value="Generate!!!" />
+                </div>
+        </div>
+           
+   
+        <div class="col-sm-6">
+             <div id="mainContainer" class="container">
+		 <ul class="nav nav-tabs">
+		    <li class="active"><a data-toggle="tab" href="#question">Question grid</a></li>
+		    <li><a data-toggle="tab" href="#answer">Answer</a></li>
+		 </ul>
+
+		   <div class="tab-content">     
+			<div class="canvasContainer  tab-pane fade in active" id="question">
+			    <canvas id="myQuestionCanvas" width="425" height="325" style="border:1px gray;">
+			    </canvas>
+			    <br /><a id="downloadQuestion" href="" download="crossword-question.png">Download Image</a>
+			</div>
+	  
+	    
+			<div class="canvasContainer  tab-pane fade" id="answer">
+			    <canvas id="myCanvas" width="425" height="325" style="border:1px gray;">
+			    </canvas>
+			    <br /><a id="downloadAnswer" href="" download="crossword-answer.png">Download Image</a>
+			</div>
+		    </div>
+		    </div>
+       
+		    <div class="row">
+		    <div class="col-sm-6">
+			<div id="across">
+			</div>                
+		    </div>
+		    <div class="col-sm-6">
+			<div id="down">
+			</div>                
+		    </div>
+		    </div>
+		    
+		    <div class="row">
+		    <div class="col-sm-6">
+			<div id="unused">
+			</div>                
+		    </div>
+		    <div class="col-sm-6">
+			<div id="errors">
+			</div>                
+		    </div>
+		    </div>
+              </div>
+        </div>
+       
+        </div>
+  </div>
+    </section>
+    <footer class="row">
+      <small></small>
+    </footer>
+    <div class="clearfix"></div>
+    </div><!-- END CONTAINER CLASS -->
+
+    <!-- BUSY ANIMATION -->
+    <div class="loading" style="display:none;">
+        <img src="img/crosswordTimer.gif" alt="xWords busy indicator" />
+    </div>​
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script src="js/xWords.js"></script>
+    <script src="js/xWordsDisplay.js"></script>
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+        $('#btnAddWords').prop('disabled', true);
+        $('textarea').on('keyup', function () {
+            var textarea_value = $("#txtWords").val();
+            if (textarea_value != '') {
+                $('#btnAddWords').prop('disabled', false);
+            } else {
+                $('#btnAddWords').prop('disabled', true);
+            }
+        });
+    });
+    </script>
+    
+  
+    <script>
+        var context;
+        var canvas;
+
+        var contextQuestion;
+        var canvasQuestion;
+
+        window.onload = function(){
+            // set up the question canvas and the answer canvas
+            canvasQuestion = document.getElementById("myQuestionCanvas");
+            contextQuestion = canvasQuestion.getContext("2d");
+
+            canvas = document.getElementById("myCanvas");
+            context = canvas.getContext("2d");
+            $('.loading').hide();
+       }
+        
+    </script>
+  </body>
+</html>
