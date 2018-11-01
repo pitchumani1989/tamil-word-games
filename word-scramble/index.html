@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<script>
+		var scrambledData = "";
+		function scrambleData() {
+			 	scrambledData = "";
+				var plainData = document.getElementById("plainData").value;
+				var lines = plainData.split("\n")
+			
+				for(count=0; count< lines.length; count++){
+				var words = lines[count].split(" ");
+				var shuffledWords = shuffle(words);
+				scrambledData += arrayToString(shuffledWords) + "\n";
+				}
+				document.getElementById("scrambledData").innerHTML = scrambledData;
+		}
+		   
+        function shuffle(words) {
+    		var j, x, i;
+    		for (i = words.length - 1; i > 0; i--) {
+        		j = Math.floor(Math.random() * (i + 1));
+        		x = words[i];
+        		words[i] = words[j];
+        		words[j] = x;
+    		}
+    		return words;
+		}
+		
+		function arrayToString(words)
+		{
+			var arrayString ="";
+			for(i=0; i < words.length; i++){
+				arrayString += words[i] + " ";
+			}
+			return arrayString.trim();
+		}
+
+   function downloadFile()
+	{ 
+		var encodedUri = encodeURI("data:text/plain;charset=utf-8," + scrambledData);
+		var link = document.createElement("a");
+		link.setAttribute("href", encodedUri);
+		link.setAttribute("download", "scramled-data.txt");
+		document.body.appendChild(link);
+   	    link.click();
+	}
+	</script>	
+
+	<textarea id ="plainData" rows="10" cols="100"></textarea><br/>
+	<button onclick="scrambleData()">Scramble</button><br/>
+    <button onclick="downloadFile()">Download</button><br/>
+	<textarea id ="scrambledData" rows="10" cols="100"></textarea>
+	<p id ="demo" rows="10" cols="100"></p>
+
+</body>
+</html>
