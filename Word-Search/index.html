@@ -6,6 +6,11 @@
 		.colorBorder {
     		border: 1px solid blue;
 		}
+
+
+
+
+
     </style>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
@@ -33,6 +38,7 @@
         control.makeTransliteratable(['searchContent']);
       }
       google.setOnLoadCallback(onLoad);
+
     </script>
     <script type="text/javascript">
     var tamilHelpingChars = ['ஂ', 'ா', 'ி', 'ீ', 'ு', 'ூ', 'ெ', 'ே', 'ை', 'ொ', 'ோ', 'ௌ', '்', 'ௗ'];
@@ -101,7 +107,7 @@
 				splitWords[i] = searchWord.charAt(i);
 			}
 		}
-		splitWords = splitWords.filter(function(e){return e}); 
+		splitWords = splitWords.filter(function(e){return e});
 		return splitWords;
 	}
 	
@@ -185,6 +191,40 @@
             document.getElementById("create").style.cursor = "not-allowed";
         }
     }
+
+    function saveAsPdf(html, savePdf) {
+		//https://www.html2pdfrocket.com/Examples/javascript
+       var self = this;
+       self.save = savePdf;
+       self.req = new XMLHttpRequest();
+
+       var url = "http://api.html2pdfrocket.com/pdf";
+       var apiKey = "2e3f9a22-7360-402a-954b-c1e49debac23";
+
+       // Additional parameters can be added here
+       var data = "apikey=" + apiKey + "&value=" + encodeURIComponent(html);
+
+       self.req.onload = function(event) {
+              self.reader = new FileReader();
+
+              self.reader.addEventListener("loadend", function() {
+
+                     // Open in new tab
+                     window.open(self.reader.result, "_blank");
+
+                     // return data URI
+                     return self.reader.result;
+              });
+
+              self.reader.readAsDataURL(self.req.response);
+       };
+
+       self.req.open("POST", url, true);
+       self.req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+       self.req.responseType = "blob";
+
+       self.req.send(data);
+	}
     </script>
 </head>
 <body>
@@ -223,7 +263,8 @@
                                 <option value="25">25</option>
                                 <option value="30">30</option>
                             </select>
-                            <input type="button" value="Create" onclick="onCreate();">
+                            <input id="createWordSearch" class="createWordSearch" type="button" value="Create"
+                                   onclick="onCreate();">
                         </div>
                     </form>
                 </div>
@@ -231,15 +272,22 @@
         </td>
         <td>
             <div class="previewContainer">
-                <div class="previewHeading">Preview Worksheet</div>
-                <br>
-                <div class="answerContainer">
-                    <div class="previewTabs">
-                        <span id="previewLink1" class="previewLink1" onclick="onWorkSheetClick();">WORKSHEET</span>
-                        <span id="previewLink2" class="previewLink2" onclick="onAnswerKeyClick();">ANSWER KEY</span>
-                    </div>
+                <h2>
+                    <div class="previewHeading">Preview Worksheet</div>
+                </h2>
+                <div class="previewTabs">
+                    <span id="previewLink1" class="previewLink1" onclick="onWorkSheetClick();">WORKSHEET</span>
+                    <span id="previewLink2" class="previewLink2" onclick="onAnswerKeyClick();">ANSWER KEY</span>
+                </div>
+                <div class="answerContainer" style="border-style: solid;border-color: green;">
                     <div id="wordSearchTable" class="wordSearchTable" align="center"></div>
                     <div id="wordSearchQuestions" class="wordSearchQuestions" align="center"></div>
+                </div>
+                <div class="downloadLinks">
+                    <input id="downloadWorkSheet" class="downloadWorkSheet" type="button" value="Download Worksheet"
+                           onclick="onDownloadWorksheet();">
+                    <input id="downloadAnswerKey" class="downloadAnswerKey" type="button"
+                           value="Download Answer key" onclick="onDownloadAnswerKey();">
                 </div>
             </div>
         </td>
