@@ -2,16 +2,6 @@
 <html>
 <head>
     <title>Word Search</title>
-    <style>
-		.colorBorder {
-    		border: 1px solid blue;
-		}
-
-
-
-
-
-    </style>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <link rel="stylesheet" href="css/unicode.css"/>
@@ -45,7 +35,7 @@
 	var tamilChars = ["அ", "ஆ", "இ", "ஈ", "உ", "ஊ", "எ", "ஏ", "ஐ", "ஒ", "ஓ", "ஔ", "க", "ங", "ச", "ஞ", "ட", "ண", "த", "ந", "ன", "ப", "ம", "ய", "ர", "ற", "ல", "ள", "ழ", "வ", "ஷ", "ஸ", "ஹ", "ஜ"];
 	var searchArray = [[]];
 	var searchWordPositions = [];
-	var showAnswer = false;
+    var pdfData;
 
 	function onCreate()
 	{
@@ -53,7 +43,8 @@
         if(searchWords != "")
         {
 		    searchArray = createSearchArray(searchWords.split('\n'));
-		    printSearchArray(searchWords.split('\n'));
+            var showAnswer = false;
+		    printSearchArray(searchWords.split('\n'), showAnswer);
 		}
 	}
 
@@ -111,73 +102,94 @@
 		return splitWords;
 	}
 	
-	function printSearchArray(searchWords)
+	function printSearchArray(searchWords, showAnswer)
 	{
 	    var result = "";
+	    pdfData = "<div style=\"font-family: Raleway;font-size: 30px;\">";
         if(document.getElementById("title").value != "")
         {
             result += "<center>"+document.getElementById("title").value+"</center><br>";
+            pdfData += "<br><h2><center>"+document.getElementById("title").value+"</center></h2><br>";
         }
         else
         {
             result += "<center>Word Search</center><br>";
+            pdfData += "<br><h2><center>Word Search</center></h2><br>";
         }
 		//print array values in table format
-		result += "<font size=\"3\"><table>";
-		for (var i = 0; i < searchArray.length; i++) 
+		result += "<table align = \"center\">";
+		pdfData += "<table align = \"center\">";
+		for (var i = 0; i < searchArray.length; i++)
 		{
 			result += "<tr>";
-    		for (var j = 0; j < searchArray[i].length; j++) 
+			pdfData += "<tr>";
+    		for (var j = 0; j < searchArray[i].length; j++)
 			{
 				if(showAnswer && searchWordPositions.includes(i+"-"+j))
 				{
-					result += "<td class=\"colorBorder\" align = \"center\">" + searchArray[i][j] + "</td>";
+					result += "<td style=\"border-style: solid;border-color: blue;border-width: thin;\" align = \"center\">" + searchArray[i][j] + "</td>";
+					pdfData += "<td style=\"font-size: 30px;\" align = \"center\">" + searchArray[i][j] + "</td>";
 				}
 				else
 				{
 					result += "<td align = \"center\">" + searchArray[i][j] + "</td>";
+					pdfData += "<td style=\"font-size: 30px\" align = \"center\">" + searchArray[i][j] + "</td>";
 				}
     		}
     		result += "</tr>";
+    		pdfData += "</tr>";
 		}
-		result += "</tr>";
-		result += "</table></font>";
-		result += "<br><hr><br>";
-		document.getElementById("wordSearchTable").innerHTML = result;
+		result += "</table><br><hr><br>";
+		pdfData += "</table><br><hr><br>";
+        document.getElementById("wordSearchTable").innerHTML = result;
 
+        pdfData+= "<center>";
 		var wordCount = 0;
 		var questions = "";
 		for (var i = 0; i < searchWords.length; i++)
 		{
 			questions+= searchWords[i]+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+			pdfData+= searchWords[i]+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 			wordCount++;
 			if(wordCount == 3)
 		    {
 		        wordCount = 0;
 		        questions+= "<br>";
+		        pdfData+= "<br>";
 		    }
     	}
+    	pdfData+= "</center></div>";
 		document.getElementById("wordSearchQuestions").innerHTML = questions;
 	}
-	
-	function onWorkSheetClick() 
+
+	function onDownloadWorksheet()
 	{
-		document.getElementById("previewLink1").style.background = "#fff";
-		document.getElementById("previewLink1").style.color = "#000";
-	    document.getElementById("previewLink2").style.background = "#4286f4";
-		document.getElementById("previewLink2").style.color = "#fff";		
-		showAnswer = false;
-		printSearchArray();
+	    var searchWords = document.getElementById("searchContent").value;
+        var showAnswer = false;
+        printSearchArray(searchWords.split('\n'), showAnswer);
+        saveAsPdf(pdfData);
+	}
+
+    function onDownloadAnswerKey()
+	{
+        var searchWords = document.getElementById("searchContent").value;
+        var showAnswer = true;
+        printSearchArray(searchWords.split('\n'), showAnswer);
+        saveAsPdf(pdfData);
+	}
+
+	function onWorkSheetClick()
+	{
+		var searchWords = document.getElementById("searchContent").value;
+        var showAnswer = false;
+        printSearchArray(searchWords.split('\n'), showAnswer);
 	}
 	
-	function onAnswerKeyClick() 
+	function onAnswerKeyClick()
 	{
-		document.getElementById("previewLink1").style.background = "#4286f4";
-		document.getElementById("previewLink1").style.color = "#fff";
-		document.getElementById("previewLink2").style.background = "#fff";
-		document.getElementById("previewLink2").style.color = "#000";
-		showAnswer = true;
-		printSearchArray();
+		var searchWords = document.getElementById("searchContent").value;
+        var showAnswer = true;
+        printSearchArray(searchWords.split('\n'), showAnswer);
 	}
 
     function changeCursor()
@@ -225,6 +237,7 @@
 
        self.req.send(data);
 	}
+
     </script>
 </head>
 <body>
