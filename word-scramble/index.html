@@ -49,12 +49,17 @@
    	    link.click();
 	}
 </script>
+<div class="alert alert-info">
+    <h4 class="alert-heading">Welcome To Word Scrambler</h4>
+    <p>This is to shuffle words in each line you typed here</p>
+</div>
+
 <div class="container">
     <br/>
     <div class="form-group">
-        <textarea class="form-control" id="plainData" rows="10" cols="100"></textarea>
+        <textarea class="form-control" id="plainData" rows="10" cols="100" placeholder="Your text here"></textarea>
         <br/>
-        <button class="btn btn-primary" onclick="scrambleData()">Scramble</button>
+        <button class="btn btn-info" onclick="scrambleData()">Scramble</button>
     </div>
 
     <div class="form-group">
