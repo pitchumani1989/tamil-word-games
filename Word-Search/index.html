@@ -46,6 +46,7 @@
             var showAnswer = false;
 		    printSearchArray(searchWords.split('\n'), showAnswer);
 		}
+		changeDownloadButtonState();
 	}
 
 	function createSearchArray(searchWords)
@@ -57,7 +58,7 @@
 		var searchArray = [[]];
 		var rows = document.getElementById("lettersAcrossCount").value;
 		var cols = document.getElementById("lettersDownCount").value;
-    	for (var i = 0; i < rows; i++) 
+    	for (var i = 0; i < rows; i++)
 		{
 			var rowArray = [];
 		    for (var j = 0; j < cols; j++)
@@ -70,7 +71,7 @@
 
 		// update array with search words horizontally
 		var uniqueRowIndexes = chance.unique(chance.natural, searchWords.length, {min: 1, max: rows});
-    	for (var i = 0; i < searchWords.length; i++) 
+    	for (var i = 0; i < searchWords.length; i++)
 		{
 			var searchWord = combineUnicodeChars(searchWords[i].trim());
 			var wordCount = searchWord.length;
@@ -101,7 +102,7 @@
 		splitWords = splitWords.filter(function(e){return e});
 		return splitWords;
 	}
-	
+
 	function printSearchArray(searchWords, showAnswer)
 	{
 	    var result = "";
@@ -184,7 +185,7 @@
         var showAnswer = false;
         printSearchArray(searchWords.split('\n'), showAnswer);
 	}
-	
+
 	function onAnswerKeyClick()
 	{
 		var searchWords = document.getElementById("searchContent").value;
@@ -192,15 +193,29 @@
         printSearchArray(searchWords.split('\n'), showAnswer);
 	}
 
-    function changeCursor()
+    function changeCreateButtonState()
     {
         if(document.getElementById("searchContent").value != "")
         {
-            document.getElementById("create").style.cursor = "pointer";
+            document.getElementById("createWordSearch").disabled = false;
         }
         else
         {
-            document.getElementById("create").style.cursor = "not-allowed";
+            document.getElementById("createWordSearch").disabled = true;
+        }
+    }
+
+    function changeDownloadButtonState()
+    {
+        if(document.getElementById("wordSearchTable").value != "")
+        {
+            document.getElementById("downloadWorkSheet").disabled = false;
+            document.getElementById("downloadAnswerKey").disabled = false;
+        }
+        else
+        {
+            document.getElementById("downloadWorkSheet").disabled = true;
+            document.getElementById("downloadAnswerKey").disabled = true;
         }
     }
 
@@ -255,7 +270,8 @@
                         <div>
                             <label>Words</label><br>
                             <textarea class="unicode" id="searchContent" lang="ta" rows="20" cols="20"
-                                      placeholder="List down your words here..." oninput="changeCursor()"></textarea>
+                                      placeholder="List down your words here..."
+                                      oninput="changeCreateButtonState()"></textarea>
                         </div>
                         <div>
                             <label>Letters Down</label>
@@ -276,7 +292,7 @@
                                 <option value="25">25</option>
                                 <option value="30">30</option>
                             </select>
-                            <input id="createWordSearch" class="createWordSearch" type="button" value="Create"
+                            <input id="createWordSearch" class="createWordSearch" type="button" value="Create" disabled
                                    onclick="onCreate();">
                         </div>
                     </form>
@@ -298,8 +314,8 @@
                 </div>
                 <div class="downloadLinks">
                     <input id="downloadWorkSheet" class="downloadWorkSheet" type="button" value="Download Worksheet"
-                           onclick="onDownloadWorksheet();">
-                    <input id="downloadAnswerKey" class="downloadAnswerKey" type="button"
+                           disabled onclick="onDownloadWorksheet();">
+                    <input id="downloadAnswerKey" class="downloadAnswerKey" type="button" disabled
                            value="Download Answer key" onclick="onDownloadAnswerKey();">
                 </div>
             </div>
