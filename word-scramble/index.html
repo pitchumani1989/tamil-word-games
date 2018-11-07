@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <link rel="stylesheet" href="bootstrap.min.css">
+</head>
 <body>
-	<script>
+<script>
 		var scrambledData = "";
 		function scrambleData() {
 			 	scrambledData = "";
@@ -45,13 +48,25 @@
 		document.body.appendChild(link);
    	    link.click();
 	}
-	</script>	
+</script>
+<div class="alert alert-info">
+    <h4 class="alert-heading">Welcome To Word Scrambler</h4>
+    <p>This is to shuffle words in each line you typed here</p>
+</div>
 
-	<textarea id ="plainData" rows="10" cols="100"></textarea><br/>
-	<button onclick="scrambleData()">Scramble</button><br/>
-    <button onclick="downloadFile()">Download</button><br/>
-	<textarea id ="scrambledData" rows="10" cols="100"></textarea>
-	<p id ="demo" rows="10" cols="100"></p>
+<div class="container">
+    <br/>
+    <div class="form-group">
+        <textarea class="form-control" id="plainData" rows="10" cols="100" placeholder="Your text here"></textarea>
+        <br/>
+        <button class="btn btn-info" onclick="scrambleData()">Scramble</button>
+    </div>
+
+    <div class="form-group">
+        <button class="btn btn-secondary float-right" onclick="downloadFile()">Download</button>
+        <textarea class="form-control" id="scrambledData" rows="10" cols="100" readonly></textarea>
+    </div>
+</div>
 
 </body>
 </html>
