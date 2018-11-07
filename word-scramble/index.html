@@ -7,7 +7,8 @@
 <script src="jspdf.min.js"></script>
 <script>
 		var scrambledData = "";
-		function scrambleData() {
+		function scrambleData()
+		{
 			 	scrambledData = "";
 				var plainData = document.getElementById("plainData").value;
 				var lines = plainData.split("\n")
@@ -20,7 +21,8 @@
 				document.getElementById("scrambledData").innerHTML = scrambledData;
 		}
 		   
-        function shuffle(words) {
+        function shuffle(words)
+        {
     		var j, x, i;
     		for (i = words.length - 1; i > 0; i--) {
         		j = Math.floor(Math.random() * (i + 1));
@@ -40,22 +42,22 @@
 			return arrayString.trim();
 		}
 
-   function downloadFile()
-	{ 
-		var encodedUri = encodeURI("data:text/plain;charset=utf-8," + scrambledData);
-		var link = document.createElement("a");
-		link.setAttribute("href", encodedUri);
-		link.setAttribute("download", "scramled-data.txt");
-		document.body.appendChild(link);
-   	    link.click();
-	}
+        function downloadFile()
+	    {
+		    var encodedUri = encodeURI("data:text/plain;charset=utf-8," + scrambledData);
+		    var link = document.createElement("a");
+		    link.setAttribute("href", encodedUri);
+		    link.setAttribute("download", "scramled-data.txt");
+		    document.body.appendChild(link);
+   	        link.click();
+	    }
 
-	function downloadPdf()
-	{
-	    var doc = new jsPDF();
-	    doc.text('Hello world!', 10, 10);
-	    doc.save('a4.pdf');
-	}
+	    function downloadPdf()
+	    {
+	        var doc = new jsPDF();
+	        doc.text(scrambledData, 10, 10);
+	        doc.save('a4.pdf');
+	    }
 </script>
 <div class="alert alert-info">
     <h4 class="alert-heading">Welcome To Word Scrambler</h4>
