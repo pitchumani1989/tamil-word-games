@@ -47,7 +47,7 @@
 		    var encodedUri = encodeURI("data:text/plain;charset=utf-8," + scrambledData);
 		    var link = document.createElement("a");
 		    link.setAttribute("href", encodedUri);
-		    link.setAttribute("download", "scramled-data.txt");
+		    link.setAttribute("download", "scrambled-data.txt");
 		    document.body.appendChild(link);
    	        link.click();
 	    }
@@ -56,7 +56,7 @@
 	    {
 	        var doc = new jsPDF();
 	        doc.text(scrambledData, 10, 10);
-	        doc.save('a4.pdf');
+	        doc.save('scrambled-data.pdf');
 	    }
 </script>
 <div class="alert alert-info">
