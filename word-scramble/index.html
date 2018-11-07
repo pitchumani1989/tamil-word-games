@@ -16,7 +16,10 @@
 				for(count=0; count< lines.length; count++){
 				var words = lines[count].split(" ");
 				var shuffledWords = shuffle(words);
+
 				scrambledData += arrayToString(shuffledWords) + "\n";
+				scrambledData += arrayToString(shuffledWords) + "\n";
+				scrambledData += answerString(shuffledWords) + "\n";
 				}
 				document.getElementById("scrambledData").innerHTML = scrambledData;
 		}
@@ -40,6 +43,15 @@
 				arrayString += words[i] + " ";
 			}
 			return arrayString.trim();
+		}
+
+		function answerString(words)
+		{
+			var answerString ="";
+			for(i=0; i < words.length; i++){
+				answerString += "_____" + " ";
+			}
+			return answerString.trim();
 		}
 
         function downloadFile()
