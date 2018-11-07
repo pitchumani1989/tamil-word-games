@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="bootstrap.min.css">
 </head>
 <body>
+<script src="jspdf.min.js"></script>
 <script>
 		var scrambledData = "";
 		function scrambleData() {
@@ -48,6 +49,13 @@
 		document.body.appendChild(link);
    	    link.click();
 	}
+
+	function downloadPdf()
+	{
+	    var doc = new jsPDF();
+	    doc.text('Hello world!', 10, 10);
+	    doc.save('a4.pdf');
+	}
 </script>
 <div class="alert alert-info">
     <h4 class="alert-heading">Welcome To Word Scrambler</h4>
@@ -67,6 +75,8 @@
         <textarea class="form-control" id="scrambledData" rows="10" cols="100" readonly></textarea>
     </div>
 </div>
+
+<button onclick="downloadPdf()">Pdf</button>
 
 </body>
 </html>
