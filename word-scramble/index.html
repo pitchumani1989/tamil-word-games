@@ -4,9 +4,11 @@
     <link rel="stylesheet" href="bootstrap.min.css">
 </head>
 <body>
+<script src="jspdf.min.js"></script>
 <script>
 		var scrambledData = "";
-		function scrambleData() {
+		function scrambleData()
+		{
 			 	scrambledData = "";
 				var plainData = document.getElementById("plainData").value;
 				var lines = plainData.split("\n")
@@ -14,12 +16,17 @@
 				for(count=0; count< lines.length; count++){
 				var words = lines[count].split(" ");
 				var shuffledWords = shuffle(words);
+
 				scrambledData += arrayToString(shuffledWords) + "\n";
+				scrambledData += answerString(shuffledWords) + "\n";
+				scrambledData += "\n";
 				}
+				scrambledData.trim()
 				document.getElementById("scrambledData").innerHTML = scrambledData;
 		}
 		   
-        function shuffle(words) {
+        function shuffle(words)
+        {
     		var j, x, i;
     		for (i = words.length - 1; i > 0; i--) {
         		j = Math.floor(Math.random() * (i + 1));
@@ -39,19 +46,35 @@
 			return arrayString.trim();
 		}
 
-   function downloadFile()
-	{ 
-		var encodedUri = encodeURI("data:text/plain;charset=utf-8," + scrambledData);
-		var link = document.createElement("a");
-		link.setAttribute("href", encodedUri);
-		link.setAttribute("download", "scramled-data.txt");
-		document.body.appendChild(link);
-   	    link.click();
-	}
+		function answerString(words)
+		{
+			var answerString ="";
+			for(i=0; i < words.length; i++){
+				answerString += "_____" + " ";
+			}
+			return answerString.trim();
+		}
+
+        function downloadFile()
+	    {
+		    var encodedUri = encodeURI("data:text/plain;charset=utf-8," + scrambledData);
+		    var link = document.createElement("a");
+		    link.setAttribute("href", encodedUri);
+		    link.setAttribute("download", "scrambled-data.txt");
+		    document.body.appendChild(link);
+   	        link.click();
+	    }
+
+	    function downloadPdf()
+	    {
+	        var doc = new jsPDF();
+	        doc.text(scrambledData, 10, 10);
+	        doc.save('scrambled-data.pdf');
+	    }
 </script>
 <div class="alert alert-info">
     <h4 class="alert-heading">Welcome To Word Scrambler</h4>
-    <p>This is to shuffle words in each line you typed here</p>
+    <p>This is to shuffle words in each line you type here</p>
 </div>
 
 <div class="container">
@@ -63,7 +86,7 @@
     </div>
 
     <div class="form-group">
-        <button class="btn btn-secondary float-right" onclick="downloadFile()">Download</button>
+        <button class="btn btn-secondary float-right" onclick="downloadPdf()">Download</button>
         <textarea class="form-control" id="scrambledData" rows="10" cols="100" readonly></textarea>
     </div>
 </div>
