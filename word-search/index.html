@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <link rel="stylesheet" href="css/unicode.css"/>
+    <script src="../word-games-common/js/jspdf.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script src="http://chancejs.com/chance.min.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -163,22 +164,6 @@
 		document.getElementById("wordSearchQuestions").innerHTML = questions;
 	}
 
-	function onDownloadWorksheet()
-	{
-	    var searchWords = document.getElementById("searchContent").value;
-        var showAnswer = false;
-        printSearchArray(searchWords.split('\n'), showAnswer);
-        saveAsPdf(pdfData);
-	}
-
-    function onDownloadAnswerKey()
-	{
-        var searchWords = document.getElementById("searchContent").value;
-        var showAnswer = true;
-        printSearchArray(searchWords.split('\n'), showAnswer);
-        saveAsPdf(pdfData);
-	}
-
 	function onWorkSheetClick()
 	{
 		var searchWords = document.getElementById("searchContent").value;
@@ -218,6 +203,22 @@
             document.getElementById("downloadAnswerKey").disabled = true;
         }
     }
+
+	function onDownloadWorksheet()
+	{
+	    var searchWords = document.getElementById("searchContent").value;
+        var showAnswer = false;
+        printSearchArray(searchWords.split('\n'), showAnswer);
+        saveAsPdf(pdfData);
+	}
+
+    function onDownloadAnswerKey()
+	{
+        var searchWords = document.getElementById("searchContent").value;
+        var showAnswer = true;
+        printSearchArray(searchWords.split('\n'), showAnswer);
+        saveAsPdf(pdfData);
+	}
 
     function saveAsPdf(html, savePdf) {
 		//https://www.html2pdfrocket.com/Examples/javascript
