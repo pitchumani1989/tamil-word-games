@@ -18,7 +18,7 @@
 				var shuffledWords = shuffle(words);
 
 				scrambledData += arrayToString(shuffledWords) + "\n";
-				scrambledData += answerString(shuffledWords) + "\n";
+				scrambledData += getAnswerString(shuffledWords) + "\n";
 				scrambledData += "\n";
 				}
 				scrambledData.trim()
@@ -46,13 +46,29 @@
 			return arrayString.trim();
 		}
 
-		function answerString(words)
+		function getAnswerString(words)
 		{
 			var answerString ="";
+			var maxLengthBlank = getMaxLengthBlank(words)
 			for(i=0; i < words.length; i++){
-				answerString += "_____" + " ";
+				answerString += maxLengthBlank + " ";
 			}
 			return answerString.trim();
+		}
+
+		function getMaxLengthBlank(words)
+		{
+		    var maxLengthBlank = "";
+            var maxLength = getMaxLength(words);
+            for(i=0; i < maxLength; i++){
+				maxLengthBlank += "_";
+			}
+			return maxLengthBlank;
+		}
+
+		function getMaxLength(words)
+		{
+		    return words.reduce(function (a, b) { return a.length > b.length ? a : b; }).length;
 		}
 
         function downloadFile()
