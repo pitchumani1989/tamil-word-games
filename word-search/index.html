@@ -37,7 +37,7 @@
 	var tamilChars = ["அ", "ஆ", "இ", "ஈ", "உ", "ஊ", "எ", "ஏ", "ஐ", "ஒ", "ஓ", "ஔ", "க", "ங", "ச", "ஞ", "ட", "ண", "த", "ந", "ன", "ப", "ம", "ய", "ர", "ற", "ல", "ள", "ழ", "வ", "ஷ", "ஸ", "ஹ", "ஜ"];
 	var searchArray = [[]];
 	var searchWordPositions = [];
-    var result = "";
+    var result;
     var pdfData;
 
 	function onCreate()
@@ -109,6 +109,8 @@
 
 	function setOutputAsHtmlString(searchWords, showAnswer)
 	{
+	    result = "";
+	    pdfData = "";
 	    pdfData = "<div style=\"font-family: Raleway;font-size: 30px;\">";
         if(document.getElementById("title").value != "")
         {
