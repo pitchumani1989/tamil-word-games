@@ -30,12 +30,14 @@
       }
       google.setOnLoadCallback(onLoad);
 
+
     </script>
     <script type="text/javascript">
     var tamilHelpingChars = ['ஂ', 'ா', 'ி', 'ீ', 'ு', 'ூ', 'ெ', 'ே', 'ை', 'ொ', 'ோ', 'ௌ', '்', 'ௗ'];
 	var tamilChars = ["அ", "ஆ", "இ", "ஈ", "உ", "ஊ", "எ", "ஏ", "ஐ", "ஒ", "ஓ", "ஔ", "க", "ங", "ச", "ஞ", "ட", "ண", "த", "ந", "ன", "ப", "ம", "ய", "ர", "ற", "ல", "ள", "ழ", "வ", "ஷ", "ஸ", "ஹ", "ஜ"];
 	var searchArray = [[]];
 	var searchWordPositions = [];
+    var result = "";
     var pdfData;
 
 	function onCreate()
@@ -45,7 +47,8 @@
         {
 		    searchArray = createSearchArray(searchWords.split('\n'));
             var showAnswer = false;
-		    printSearchArray(searchWords.split('\n'), showAnswer);
+		    setOutputAsHtmlString(searchWords.split('\n'), showAnswer);
+            printOutput();
 		}
 		changeDownloadButtonState();
 	}
@@ -104,9 +107,8 @@
 		return splitWords;
 	}
 
-	function printSearchArray(searchWords, showAnswer)
+	function setOutputAsHtmlString(searchWords, showAnswer)
 	{
-	    var result = "";
 	    pdfData = "<div style=\"font-family: Raleway;font-size: 30px;\">";
         if(document.getElementById("title").value != "")
         {
@@ -130,7 +132,7 @@
 				if(showAnswer && searchWordPositions.includes(i+"-"+j))
 				{
 					result += "<td style=\"border-style: solid;border-color: blue;border-width: thin;\" align = \"center\">" + searchArray[i][j] + "</td>";
-					pdfData += "<td style=\"font-size: 30px;\" align = \"center\">" + searchArray[i][j] + "</td>";
+					pdfData += "<td style=\"font-size: 30px;border-style: solid;border-color: blue;border-width: thin;\" align = \"center\">" + searchArray[i][j] + "</td>";
 				}
 				else
 				{
@@ -143,39 +145,44 @@
 		}
 		result += "</table><br><hr><br>";
 		pdfData += "</table><br><hr><br>";
-        document.getElementById("wordSearchTable").innerHTML = result;
 
         pdfData+= "<center>";
 		var wordCount = 0;
 		var questions = "";
 		for (var i = 0; i < searchWords.length; i++)
 		{
-			questions+= searchWords[i]+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+			result+= searchWords[i]+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 			pdfData+= searchWords[i]+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 			wordCount++;
 			if(wordCount == 3)
 		    {
 		        wordCount = 0;
-		        questions+= "<br>";
+		        result+= "<br>";
 		        pdfData+= "<br>";
 		    }
     	}
     	pdfData+= "</center></div>";
-		document.getElementById("wordSearchQuestions").innerHTML = questions;
+	}
+
+    function printOutput()
+	{
+        document.getElementById("wordSearchTable").innerHTML = result;
 	}
 
 	function onWorkSheetClick()
 	{
 		var searchWords = document.getElementById("searchContent").value;
         var showAnswer = false;
-        printSearchArray(searchWords.split('\n'), showAnswer);
+        setOutputAsHtmlString(searchWords.split('\n'), showAnswer);
+        printOutput();
 	}
 
 	function onAnswerKeyClick()
 	{
 		var searchWords = document.getElementById("searchContent").value;
         var showAnswer = true;
-        printSearchArray(searchWords.split('\n'), showAnswer);
+        setOutputAsHtmlString(searchWords.split('\n'), showAnswer);
+        printOutput();
 	}
 
     function changeCreateButtonState()
@@ -208,7 +215,7 @@
 	{
 	    var searchWords = document.getElementById("searchContent").value;
         var showAnswer = false;
-        printSearchArray(searchWords.split('\n'), showAnswer);
+        setOutputAsHtmlString(searchWords.split('\n'), showAnswer);
         saveAsPdf(pdfData);
 	}
 
@@ -216,7 +223,7 @@
 	{
         var searchWords = document.getElementById("searchContent").value;
         var showAnswer = true;
-        printSearchArray(searchWords.split('\n'), showAnswer);
+        setOutputAsHtmlString(searchWords.split('\n'), showAnswer);
         saveAsPdf(pdfData);
 	}
 
@@ -253,6 +260,7 @@
 
        self.req.send(data);
 	}
+
 
     </script>
 </head>
@@ -311,7 +319,6 @@
                 </div>
                 <div class="answerContainer" style="border-style: solid;border-color: green;">
                     <div id="wordSearchTable" class="wordSearchTable" align="center"></div>
-                    <div id="wordSearchQuestions" class="wordSearchQuestions" align="center"></div>
                 </div>
                 <div class="downloadLinks">
                     <input id="downloadWorkSheet" class="downloadWorkSheet" type="button" value="Download Worksheet"
