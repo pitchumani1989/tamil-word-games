@@ -2,14 +2,10 @@
 <html>
 <head>
     <title>Word Search</title>
-    <style>
-		.colorBorder {
-    		border: 1px solid blue;
-		}
-    </style>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <link rel="stylesheet" href="css/unicode.css"/>
+    <script src="../word-games-common/js/jspdf.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script src="http://chancejs.com/chance.min.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -33,13 +29,16 @@
         control.makeTransliteratable(['searchContent']);
       }
       google.setOnLoadCallback(onLoad);
+
+
     </script>
     <script type="text/javascript">
     var tamilHelpingChars = ['ஂ', 'ா', 'ி', 'ீ', 'ு', 'ூ', 'ெ', 'ே', 'ை', 'ொ', 'ோ', 'ௌ', '்', 'ௗ'];
 	var tamilChars = ["அ", "ஆ", "இ", "ஈ", "உ", "ஊ", "எ", "ஏ", "ஐ", "ஒ", "ஓ", "ஔ", "க", "ங", "ச", "ஞ", "ட", "ண", "த", "ந", "ன", "ப", "ம", "ய", "ர", "ற", "ல", "ள", "ழ", "வ", "ஷ", "ஸ", "ஹ", "ஜ"];
 	var searchArray = [[]];
 	var searchWordPositions = [];
-	var showAnswer = false;
+    var result;
+    var pdfData;
 
 	function onCreate()
 	{
@@ -47,8 +46,11 @@
         if(searchWords != "")
         {
 		    searchArray = createSearchArray(searchWords.split('\n'));
-		    printSearchArray(searchWords.split('\n'));
+            var showAnswer = false;
+		    setOutputAsHtmlString(searchWords.split('\n'), showAnswer);
+            printOutput();
 		}
+		changeDownloadButtonState();
 	}
 
 	function createSearchArray(searchWords)
@@ -60,7 +62,7 @@
 		var searchArray = [[]];
 		var rows = document.getElementById("lettersAcrossCount").value;
 		var cols = document.getElementById("lettersDownCount").value;
-    	for (var i = 0; i < rows; i++) 
+    	for (var i = 0; i < rows; i++)
 		{
 			var rowArray = [];
 		    for (var j = 0; j < cols; j++)
@@ -73,7 +75,7 @@
 
 		// update array with search words horizontally
 		var uniqueRowIndexes = chance.unique(chance.natural, searchWords.length, {min: 1, max: rows});
-    	for (var i = 0; i < searchWords.length; i++) 
+    	for (var i = 0; i < searchWords.length; i++)
 		{
 			var searchWord = combineUnicodeChars(searchWords[i].trim());
 			var wordCount = searchWord.length;
@@ -101,90 +103,167 @@
 				splitWords[i] = searchWord.charAt(i);
 			}
 		}
-		splitWords = splitWords.filter(function(e){return e}); 
+		splitWords = splitWords.filter(function(e){return e});
 		return splitWords;
 	}
-	
-	function printSearchArray(searchWords)
+
+	function setOutputAsHtmlString(searchWords, showAnswer)
 	{
-	    var result = "";
+	    result = "";
+	    pdfData = "";
+	    pdfData = "<div style=\"font-family: Raleway;font-size: 30px;\">";
         if(document.getElementById("title").value != "")
         {
             result += "<center>"+document.getElementById("title").value+"</center><br>";
+            pdfData += "<br><h2><center>"+document.getElementById("title").value+"</center></h2><br>";
         }
         else
         {
             result += "<center>Word Search</center><br>";
+            pdfData += "<br><h2><center>Word Search</center></h2><br>";
         }
 		//print array values in table format
-		result += "<font size=\"3\"><table>";
-		for (var i = 0; i < searchArray.length; i++) 
+		result += "<table align = \"center\">";
+		pdfData += "<table align = \"center\" cellpadding=\"10\">";
+		for (var i = 0; i < searchArray.length; i++)
 		{
 			result += "<tr>";
-    		for (var j = 0; j < searchArray[i].length; j++) 
+			pdfData += "<tr>";
+    		for (var j = 0; j < searchArray[i].length; j++)
 			{
 				if(showAnswer && searchWordPositions.includes(i+"-"+j))
 				{
-					result += "<td class=\"colorBorder\" align = \"center\">" + searchArray[i][j] + "</td>";
+					result += "<td style=\"border-style: solid;border-color: blue;border-width: thin;\" align = \"center\">" + searchArray[i][j] + "</td>";
+					pdfData += "<td style=\"font-size: 30px;border-style: solid;border-color: blue;border-width: thin;\" align = \"center\">" + searchArray[i][j] + "</td>";
 				}
 				else
 				{
 					result += "<td align = \"center\">" + searchArray[i][j] + "</td>";
+					pdfData += "<td style=\"font-size: 30px\" align = \"center\">" + searchArray[i][j] + "</td>";
 				}
     		}
     		result += "</tr>";
+    		pdfData += "</tr>";
 		}
-		result += "</tr>";
-		result += "</table></font>";
-		result += "<br><hr><br>";
-		document.getElementById("wordSearchTable").innerHTML = result;
+		result += "</table><br><hr><br>";
+		pdfData += "</table><br><hr><br>";
 
+        pdfData+= "<center>";
 		var wordCount = 0;
 		var questions = "";
 		for (var i = 0; i < searchWords.length; i++)
 		{
-			questions+= searchWords[i]+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+			result+= searchWords[i]+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+			pdfData+= searchWords[i]+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 			wordCount++;
 			if(wordCount == 3)
 		    {
 		        wordCount = 0;
-		        questions+= "<br>";
+		        result+= "<br>";
+		        pdfData+= "<br>";
 		    }
     	}
-		document.getElementById("wordSearchQuestions").innerHTML = questions;
-	}
-	
-	function onWorkSheetClick() 
-	{
-		document.getElementById("previewLink1").style.background = "#fff";
-		document.getElementById("previewLink1").style.color = "#000";
-	    document.getElementById("previewLink2").style.background = "#4286f4";
-		document.getElementById("previewLink2").style.color = "#fff";		
-		showAnswer = false;
-		printSearchArray();
-	}
-	
-	function onAnswerKeyClick() 
-	{
-		document.getElementById("previewLink1").style.background = "#4286f4";
-		document.getElementById("previewLink1").style.color = "#fff";
-		document.getElementById("previewLink2").style.background = "#fff";
-		document.getElementById("previewLink2").style.color = "#000";
-		showAnswer = true;
-		printSearchArray();
+    	pdfData+= "</center></div>";
 	}
 
-    function changeCursor()
+    function printOutput()
+	{
+        document.getElementById("wordSearchTable").innerHTML = result;
+	}
+
+	function onWorkSheetClick()
+	{
+		var searchWords = document.getElementById("searchContent").value;
+        var showAnswer = false;
+        setOutputAsHtmlString(searchWords.split('\n'), showAnswer);
+        printOutput();
+	}
+
+	function onAnswerKeyClick()
+	{
+		var searchWords = document.getElementById("searchContent").value;
+        var showAnswer = true;
+        setOutputAsHtmlString(searchWords.split('\n'), showAnswer);
+        printOutput();
+	}
+
+    function changeCreateButtonState()
     {
         if(document.getElementById("searchContent").value != "")
         {
-            document.getElementById("create").style.cursor = "pointer";
+            document.getElementById("createWordSearch").disabled = false;
         }
         else
         {
-            document.getElementById("create").style.cursor = "not-allowed";
+            document.getElementById("createWordSearch").disabled = true;
         }
     }
+
+    function changeDownloadButtonState()
+    {
+        if(document.getElementById("wordSearchTable").value != "")
+        {
+            document.getElementById("downloadWorkSheet").disabled = false;
+            document.getElementById("downloadAnswerKey").disabled = false;
+        }
+        else
+        {
+            document.getElementById("downloadWorkSheet").disabled = true;
+            document.getElementById("downloadAnswerKey").disabled = true;
+        }
+    }
+
+	function onDownloadWorksheet()
+	{
+	    var searchWords = document.getElementById("searchContent").value;
+        var showAnswer = false;
+        setOutputAsHtmlString(searchWords.split('\n'), showAnswer);
+        saveAsPdf(pdfData);
+	}
+
+    function onDownloadAnswerKey()
+	{
+        var searchWords = document.getElementById("searchContent").value;
+        var showAnswer = true;
+        setOutputAsHtmlString(searchWords.split('\n'), showAnswer);
+        saveAsPdf(pdfData);
+	}
+
+    function saveAsPdf(html, savePdf) {
+		//https://www.html2pdfrocket.com/Examples/javascript
+       var self = this;
+       self.save = savePdf;
+       self.req = new XMLHttpRequest();
+
+       var url = "http://api.html2pdfrocket.com/pdf";
+       var apiKey = "2e3f9a22-7360-402a-954b-c1e49debac23";
+
+       // Additional parameters can be added here
+       var data = "apikey=" + apiKey + "&value=" + encodeURIComponent(html);
+
+       self.req.onload = function(event) {
+              self.reader = new FileReader();
+
+              self.reader.addEventListener("loadend", function() {
+
+                     // Open in new tab
+                     window.open(self.reader.result, "_blank");
+
+                     // return data URI
+                     return self.reader.result;
+              });
+
+              self.reader.readAsDataURL(self.req.response);
+       };
+
+       self.req.open("POST", url, true);
+       self.req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+       self.req.responseType = "blob";
+
+       self.req.send(data);
+	}
+
+
     </script>
 </head>
 <body>
@@ -202,7 +281,8 @@
                         <div>
                             <label>Words</label><br>
                             <textarea class="unicode" id="searchContent" lang="ta" rows="20" cols="20"
-                                      placeholder="List down your words here..." oninput="changeCursor()"></textarea>
+                                      placeholder="List down your words here..."
+                                      oninput="changeCreateButtonState()"></textarea>
                         </div>
                         <div>
                             <label>Letters Down</label>
@@ -223,7 +303,8 @@
                                 <option value="25">25</option>
                                 <option value="30">30</option>
                             </select>
-                            <input type="button" value="Create" onclick="onCreate();">
+                            <input id="createWordSearch" class="createWordSearch" type="button" value="Create" disabled
+                                   onclick="onCreate();">
                         </div>
                     </form>
                 </div>
@@ -231,15 +312,21 @@
         </td>
         <td>
             <div class="previewContainer">
-                <div class="previewHeading">Preview Worksheet</div>
-                <br>
-                <div class="answerContainer">
-                    <div class="previewTabs">
-                        <span id="previewLink1" class="previewLink1" onclick="onWorkSheetClick();">WORKSHEET</span>
-                        <span id="previewLink2" class="previewLink2" onclick="onAnswerKeyClick();">ANSWER KEY</span>
-                    </div>
+                <h2>
+                    <div class="previewHeading">Preview Worksheet</div>
+                </h2>
+                <div class="previewTabs">
+                    <span id="previewLink1" class="previewLink1" onclick="onWorkSheetClick();">WORKSHEET</span>
+                    <span id="previewLink2" class="previewLink2" onclick="onAnswerKeyClick();">ANSWER KEY</span>
+                </div>
+                <div class="answerContainer" style="border-style: solid;border-color: green;">
                     <div id="wordSearchTable" class="wordSearchTable" align="center"></div>
-                    <div id="wordSearchQuestions" class="wordSearchQuestions" align="center"></div>
+                </div>
+                <div class="downloadLinks">
+                    <input id="downloadWorkSheet" class="downloadWorkSheet" type="button" value="Download Worksheet"
+                           disabled onclick="onDownloadWorksheet();">
+                    <input id="downloadAnswerKey" class="downloadAnswerKey" type="button" disabled
+                           value="Download Answer key" onclick="onDownloadAnswerKey();">
                 </div>
             </div>
         </td>

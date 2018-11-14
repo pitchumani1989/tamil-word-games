@@ -41,7 +41,7 @@ select{
   width: 75px;
   margin: 10px 10px;
 }
-input[type=button]{
+.createWordSearch{
   width: 80px;
   height:40px;
   border-radius: 5px;
@@ -59,28 +59,30 @@ img{
   color: #000;
 }
 .previewContainer{
+  margin-top: 30px;
   width: 400px;
   height: 650px;
-  background: #4286f4;
+  background: #ffffff;
 }
 .answerContainer{
 	width: 340px;
-    height: 550px;
-	background: #fff;	
-	margin-left: 25px; 
-}
-.previewTabs{
-	width: 350px;
-	height: 50px;
+    height: 450px;
+	background: #fff;
+	margin-left: 25px;
 }
 .previewHeading{
   padding: 20px;
   margin-top: 25px;
   position: relative;
   text-align: center;
-  color: #fff;
+  color: #000;
+}
+.previewTabs{
+	width: 350px;
+	height: 40px;
 }
 .previewLink1{
+  margin-left: 20px;
   padding-left: 25px;
   padding-right: 25px;
   padding-bottom: 10px;
@@ -89,15 +91,41 @@ img{
   cursor: pointer;
 }
 .previewLink2{
-  margin-left: 20px;
+  margin-left: 10px;
   padding-left: 32px;
   padding-right: 25px;
   padding-bottom: 10px;
   text-align: center;
-  background: #4286f4;
-  color: #fff;
+  color: #000;
   cursor: pointer;
 }
-.wordSearchTable, .wordSearchQuestions{
+.wordSearchTable{
+  margin-top: 20px;
   color: #000;
+}
+.wordSearchQuestions{
+  color: #000;
+}
+.downloadLinks{
+  margin-top: 25px;
+  width: 350px;
+  height: 50px;
+}
+.downloadWorkSheet{
+  margin-left: 35px;
+  width: 150px;
+  height:40px;
+  border-radius: 5px;
+  background: url(../img/button.jpg) repeat-x;
+  font-family: Raleway;
+  font-size: 14px;
+}
+.downloadAnswerKey{
+  margin-left: 10px;
+  width: 150px;
+  height:40px;
+  border-radius: 5px;
+  background: url(../img/button.jpg) repeat-x;
+  font-family: Raleway;
+  font-size: 14px;
 }
