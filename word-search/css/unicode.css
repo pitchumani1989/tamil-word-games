@@ -19,19 +19,27 @@ label{
   margin-left: 10px;
 }
 #wordSearchContainer{
-  width: 600px;
-  margin-left: 400px;
+  width: 550px;
+  margin-left: 325px;
 }
 .outerWrapper{
   margin-top: 30px;
   padding: 5px;
   background: #fff;
+  height: 640px;
 }
 .innerWrapper{  
   padding: 10px;
 }
-input[type=text], input[type=submit], textarea{
+input[type=text], input[type=submit]{
   padding: 10px;
+  width: 450px;
+  margin: 10px 10px;
+  margin-bottom: 20px;
+}
+textarea{
+  padding: 10px;
+  height: 400px;
   width: 450px;
   margin: 10px 10px;
   margin-bottom: 20px;
