@@ -150,7 +150,6 @@
 
         pdfData+= "<center>";
 		var wordCount = 0;
-		var questions = "";
 		for (var i = 0; i < searchWords.length; i++)
 		{
 			result+= searchWords[i]+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -159,8 +158,8 @@
 			if(wordCount == 3)
 		    {
 		        wordCount = 0;
-		        result+= "<br>";
-		        pdfData+= "<br>";
+		        result+= "<br><br>";
+		        pdfData+= "<br><br>";
 		    }
     	}
     	pdfData+= "</center></div>";
