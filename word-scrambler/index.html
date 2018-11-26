@@ -11,6 +11,8 @@
 		{
 			 	scrambledData = "";
 				var plainData = document.getElementById("plainData").value;
+				var hasAnswerString = document.getElementById("hasAnswerString").checked;
+				var newLines = document.getElementById("newLines").value;
 				var lines = plainData.split("\n")
 			
 				for(count=0; count< lines.length; count++){
@@ -18,8 +20,11 @@
 				var shuffledWords = shuffle(words);
 
 				scrambledData += arrayToString(shuffledWords) + "\n";
-				scrambledData += getAnswerString(shuffledWords) + "\n";
-				scrambledData += "\n";
+				if(hasAnswerString)
+				{
+				    scrambledData += getAnswerString(shuffledWords) + "\n";
+				}
+				scrambledData += getNewLinesString(newLines);
 				}
 				scrambledData.trim()
 				document.getElementById("scrambledData").innerHTML = scrambledData;
@@ -71,6 +76,15 @@
 		    return words.reduce(function (a, b) { return a.length > b.length ? a : b; }).length;
 		}
 
+		function getNewLinesString(newLines)
+		{
+			var newLinesString ="";
+			for(i=0; i < newLines; i++){
+				newLinesString += "\n";
+			}
+			return newLinesString;
+		}
+
         function downloadFile()
 	    {
 		    var encodedUri = encodeURI("data:text/plain;charset=utf-8," + scrambledData);
@@ -107,6 +121,7 @@
             //comparePdf(doc.output(), 'scrambled-data.pdf', 'unicode')
             doc.save('scrambled-data.pdf');
 	    }
+
 </script>
 <div class="alert alert-info">
     <h4 class="alert-heading">Welcome To Word Scrambler</h4>
@@ -124,6 +139,11 @@
     <div class="form-group">
         <button class="btn btn-secondary float-right" onclick="downloadPdf()">Download</button>
         <textarea class="form-control" id="scrambledData" rows="10" cols="100" readonly></textarea>
+    </div>
+
+    <div class="form-group">
+            <input type="checkbox" id="hasAnswerString"/>
+            <input type="text" class="form-control" id="newLines"/>
     </div>
 </div>
 
