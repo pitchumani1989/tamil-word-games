@@ -140,11 +140,26 @@
         <button class="btn btn-secondary float-right" onclick="downloadPdf()">Download</button>
         <textarea class="form-control" id="scrambledData" rows="10" cols="100" readonly></textarea>
     </div>
+</div>
 
-    <div class="form-group alert alert-dark">
-        <input type="checkbox" id="hasAnswerString">Want blanks for answers?
-        <input type="text" class="form-control" id="newLines" value="1"/>
-    </div>
+<div class="container alert alert-dark">
+    <form class="form">
+        <div class="form-group row">
+            <div class="col-sm-3">Want blanks for answers?</div>
+            <div class="col-sm-9">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="hasAnswerString">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="newLines" class="col-sm-3 col-form-label">New lines</label>
+            <div class="col-sm-9">
+                <input type="email" class="form-control" id="newLines" placeholder="New lines">
+            </div>
+        </div>
+    </form>
 </div>
 
 </body>
