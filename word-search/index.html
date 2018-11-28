@@ -67,28 +67,99 @@
 			var rowArray = [];
 		    for (var j = 0; j < cols; j++)
 			{
-				var randomChar = tamilChars[Math.floor(Math.random() * tamilChars.length)];
-				rowArray.push(randomChar);
+				rowArray.push(null);
 			}
 			searchArray.push(rowArray);
     	}
 
-		// update array with search words horizontally
-		var uniqueRowIndexes = chance.unique(chance.natural, searchWords.length, {min: 1, max: rows});
-    	for (var i = 0; i < searchWords.length; i++)
+        for (var i = 0; i < searchWords.length; i++)
+        {
+            var searchWord = combineUnicodeChars(searchWords[i].trim());
+            var axis = (Math.floor(Math.random() * 2) + 1);
+
+            switch (axis)
+            {
+                case 1:
+                    horizontalWordSearch(searchWord, searchArray, rows, cols);
+                    break;
+                case 2:
+                    verticalWordSearch(searchWord, searchArray, rows, cols);
+                    break;
+                default:
+                    horizontalWordSearch(searchWord, searchArray, rows, cols);
+            }
+        }
+
+    	// update unfilled places with random characters
+    	for (var i = 0; i < rows; i++)
 		{
-			var searchWord = combineUnicodeChars(searchWords[i].trim());
-			var wordCount = searchWord.length;
-			var colIndex = Math.floor(Math.random() * (cols - wordCount)) + 1;
-			for(var j = 0; j < wordCount; j++)
+		    for (var j = 0; j < cols; j++)
 			{
-				searchArray[uniqueRowIndexes[i]][colIndex] = searchWord[j];
-				searchWordPositions.push(uniqueRowIndexes[i]+"-"+colIndex);
-				colIndex++;
+			    if(searchArray[i][j] == null) {
+				    var randomChar = tamilChars[Math.floor(Math.random() * tamilChars.length)];
+				    searchArray[i][j] = randomChar;
+				}
 			}
     	}
 		return searchArray;
 	}
+
+    function horizontalWordSearch(searchWord, searchArray, rows, cols)
+    {
+        var rowIndex
+        var colIndex
+        var wordLength = searchWord.length;
+        var wordAlreadyExistInPosition = false;
+
+        do {
+            rowIndex = (Math.floor(Math.random() * rows) + 1);
+            colIndex = Math.floor(Math.random() * (cols - wordLength)) + 1;
+            for(var i = colIndex; i < colIndex + wordLength; i++)
+		    {
+		        if(!(searchArray[rowIndex][i] == null)) {
+		            wordAlreadyExistInPosition = true;
+		            break;
+		        }
+		    }
+        }while(wordAlreadyExistInPosition);
+
+        var j = 0;
+        for(var i = colIndex; i < colIndex + wordLength; i++)
+		{
+		    searchArray[rowIndex][i] = searchWord[j];
+			searchWordPositions.push(rowIndex+"-"+i);
+			j++;
+		}
+    }
+
+    function verticalWordSearch(searchWord, searchArray, rows, cols)
+    {
+        var rowIndex
+        var colIndex
+        var wordLength = searchWord.length;
+        var wordAlreadyExistInPosition = false;
+
+        do {
+            rowIndex = Math.floor(Math.random() * (rows - wordLength)) + 1;
+            colIndex = (Math.floor(Math.random() * cols) + 1);
+
+            for(var i = rowIndex; i < rowIndex + wordLength; i++)
+		    {
+		        if(!(searchArray[i][colIndex] == null)) {
+		            wordAlreadyExistInPosition = true;
+		            break;
+		        }
+		    }
+        }while(wordAlreadyExistInPosition);
+
+        var j = 0;
+        for(var i = rowIndex; i < rowIndex + wordLength; i++)
+		{
+		    searchArray[i][colIndex] = searchWord[j];
+			searchWordPositions.push(i+"-"+colIndex);
+			j++;
+		}
+    }
 
 	function combineUnicodeChars(searchWord)
 	{
@@ -261,6 +332,13 @@
 
        self.req.send(data);
 	}
+
+
+
+
+
+
+
 
 
     </script>
