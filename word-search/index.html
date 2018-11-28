@@ -31,6 +31,8 @@
       google.setOnLoadCallback(onLoad);
 
 
+
+
     </script>
     <script type="text/javascript">
     var tamilHelpingChars = ['ஂ', 'ா', 'ி', 'ீ', 'ு', 'ூ', 'ெ', 'ே', 'ை', 'ொ', 'ோ', 'ௌ', '்', 'ௗ'];
@@ -62,7 +64,7 @@
 		var searchArray = [[]];
 		var rows = document.getElementById("lettersAcrossCount").value;
 		var cols = document.getElementById("lettersDownCount").value;
-    	for (var i = 0; i < rows; i++)
+    	for (var i = 0; i < rows - 1; i++)
 		{
 			var rowArray = [];
 		    for (var j = 0; j < cols; j++)
@@ -112,8 +114,8 @@
         var wordAlreadyExistInPosition = false;
 
         do {
-            rowIndex = (Math.floor(Math.random() * rows) + 1);
-            colIndex = Math.floor(Math.random() * (cols - wordLength)) + 1;
+            rowIndex = Math.floor(Math.random() * rows);
+            colIndex = Math.floor(Math.random() * (cols - wordLength));
             for(var i = colIndex; i < colIndex + wordLength; i++)
 		    {
 		        if(!(searchArray[rowIndex][i] == null)) {
@@ -140,8 +142,8 @@
         var wordAlreadyExistInPosition = false;
 
         do {
-            rowIndex = Math.floor(Math.random() * (rows - wordLength)) + 1;
-            colIndex = (Math.floor(Math.random() * cols) + 1);
+            rowIndex = Math.floor(Math.random() * (rows - wordLength));
+            colIndex = Math.floor(Math.random() * cols);
 
             for(var i = rowIndex; i < rowIndex + wordLength; i++)
 		    {
