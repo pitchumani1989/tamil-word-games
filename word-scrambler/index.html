@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="stylesheet" href="../word-games-common/css/bootstrap.min.css">
 </head>
 <body>
 <script src="../word-games-common/js/jspdf.min.js"></script>
 <script>
+        var tamilHelpingChars = ['ஂ', 'ா', 'ி', 'ீ', 'ு', 'ூ', 'ெ', 'ே', 'ை', 'ொ', 'ோ', 'ௌ', '்', 'ௗ'];
+	    var tamilChars = ["அ", "ஆ", "இ", "ஈ", "உ", "ஊ", "எ", "ஏ", "ஐ", "ஒ", "ஓ", "ஔ", "க", "ங", "ச", "ஞ", "ட", "ண", "த", "ந", "ன", "ப", "ம", "ய", "ர", "ற", "ல", "ள", "ழ",                             "வ", "ஷ", "ஸ", "ஹ", "ஜ"];
 		var scrambledData = "";
 		function scrambleData()
 		{
@@ -14,11 +17,11 @@
 				var hasAnswerString = document.getElementById("hasAnswerString").checked;
 				var newLinesBetweenQuestionAndAnswer = document.getElementById("newLinesBetweenQuestionAndAnswer").value;
 				var newLinesBetweenQuestions = document.getElementById("newLinesBetweenQuestions").value;
+				var splitLetters = document.getElementById("letters").checked
 				var lines = plainData.split("\n")
 			
 				for(count=0; count< lines.length; count++){
-				var delimiter = getDelimiter();
-				var words = lines[count].split(delimiter);
+				var words = splitString(lines[count], splitLetters);
 				var shuffledWords = shuffle(words);
 
 				scrambledData += arrayToString(shuffledWords) + "\n";
@@ -33,12 +36,41 @@
 				document.getElementById("scrambledData").innerHTML = scrambledData;
 		}
 
-		function getDelimiter()
+		function splitString(lineString, splitLetters)
 		{
-		    if(document.getElementById("letters").checked){
-		        return "";
+		    if(splitLetters) {
+		        if(tamilChars.includes(lineString.charAt(0)))
+		        {
+                    return splitTamilLetters(lineString);
+		        }
+		        return splitEnglishLetters(lineString);
 		    }
-		    return " ";
+		    return splitWords(lineString);
+		}
+
+		function splitTamilLetters(lineString)
+	    {
+		    var splitLetters = [];
+		    for(var i = 0; i < lineString.length; i++) {
+			    if(tamilHelpingChars.includes(lineString.charAt(i))) {
+				    splitLetters[i-1] = lineString.charAt(i-1) + lineString.charAt(i);
+			    }
+			    else {
+				splitLetters[i] = lineString.charAt(i);
+			    }
+		    }
+		    splitLetters = splitLetters.filter(function(e){return e});
+		    return splitLetters;
+	    }
+
+	    function splitEnglishLetters(lineString)
+		{
+		    return lineString.split("");
+		}
+
+		function splitWords(lineString)
+		{
+		    return lineString.split(" ");
 		}
 		   
         function shuffle(arrayStrings)
@@ -145,6 +177,8 @@
             doc.save('scrambled-data.pdf');
 	    }
 
+
+
 </script>
 <div class="alert alert-info">
     <h4 class="alert-heading">Welcome To Word Scrambler</h4>
@@ -175,20 +209,24 @@
             <div class="col-sm-4">Want blanks for answers?</div>
             <div class="col-sm-8">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="hasAnswerString" onclick="onCheckHasAnswerString()">
+                    <input class="form-check-input" type="checkbox" id="hasAnswerString"
+                           onclick="onCheckHasAnswerString()">
                 </div>
             </div>
         </div>
 
         <div class="form-group row" id="answerStringContainer" style="display:none">
-            <label for="newLinesBetweenQuestionAndAnswer" class="col-sm-4 col-form-label">No. of new lines between question and answer:</label>
+            <label for="newLinesBetweenQuestionAndAnswer" class="col-sm-4 col-form-label">No. of new lines between
+                question and answer:</label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" id="newLinesBetweenQuestionAndAnswer" value="1" placeholder="New lines">
+                <input type="text" class="form-control" id="newLinesBetweenQuestionAndAnswer" value="1"
+                       placeholder="New lines">
             </div>
         </div>
 
         <div class="form-group row">
-            <label for="newLinesBetweenQuestions" class="col-sm-4 col-form-label">No. of new lines between questions:</label>
+            <label for="newLinesBetweenQuestions" class="col-sm-4 col-form-label">No. of new lines between
+                questions:</label>
             <div class="col-sm-8">
                 <input type="text" class="form-control" id="newLinesBetweenQuestions" value="1" placeholder="New lines">
             </div>
